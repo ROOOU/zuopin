@@ -1,32 +1,30 @@
 {
-  "name": "notion-deploy",
+  "name": "portfolio",
   "version": "1.0.0",
   "private": true,
+  "description": "盛玉飞设计作品集 - 基于 Markdown 的个人作品集网站",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "@notionhq/client": "^5.6.0",
-    "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^25.0.3",
     "@types/react": "^18.3.27",
     "@types/react-dom": "^18.3.7",
     "next": "^14.2.35",
-    "notion-client": "^7.7.3",
-    "notion-types": "^7.7.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-notion-x": "^7.7.3",
+    "react-markdown": "^10.1.0",
+    "rehype-highlight": "^7.0.2",
+    "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.1",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@tailwindcss/typography": "^0.5.19",
     "autoprefixer": "^10.4.23",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18"

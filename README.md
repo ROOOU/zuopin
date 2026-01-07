@@ -1,63 +1,47 @@
-# Notion 到 Vercel 部署项目
+# 盛玉飞设计作品集
 
-这个项目可以将 Notion 页面原样部署到 Vercel。
+这是一个基于 Next.js 和 Markdown 的个人作品集网站，完全独立于 Notion，方便维护和部署。
 
-## 配置步骤
+## 技术栈
 
-### 1. 创建 Notion Integration
+- **Next.js 14** - React 框架
+- **TypeScript** - 类型安全
+- **Tailwind CSS** - 样式框架
+- **React Markdown** - Markdown 渲染
+- **Remark GFM** - GitHub Flavored Markdown 支持
+- **Rehype Highlight** - 代码高亮
 
-1. 访问 [Notion My Integrations](https://www.notion.so/my-integrations)
-2. 点击 "New integration"
-3. 填写名称（例如：Vercel Deploy），选择你的 workspace
-4. 点击 "Submit"
-5. 复制生成的 **Internal Integration Token**（格式：`secret_xxx...`）
+## 特性
 
-### 2. 授权 Integration 访问你的页面
+- ✅ 完全独立，不依赖 Notion API
+- ✅ 保留 Markdown 格式（标题、列表、代码块等）
+- ✅ 支持代码高亮
+- ✅ 支持图片
+- ✅ 支持表格
+- ✅ 响应式设计
+- ✅ Vercel 零配置部署
 
-1. 打开你的 Notion 页面：https://www.notion.so/PC-26f2cebad66680e18f2fea4c87f7ab29
-2. 点击页面右上角的 `...` 按钮
-3. 选择 "Add connections"
-4. 找到并选择你刚才创建的 Integration
-5. 确认授权
+## 如何更新内容
 
-### 3. 配置环境变量
+1. **在 Notion 中编辑你的内容**
+2. **导出为 Markdown**
+   - 在 Notion 页面右上角点击 "..."
+   - 选择 "Export"
+   - 格式选择 "Markdown & CSV"
+   - 下载并解压
 
-#### 本地开发
-复制 `.env.example` 为 `.env.local`，填写：
-```
-NOTION_TOKEN=your_internal_integration_token_here
-NOTION_PAGE_ID=26f2cebad66680e18f2fea4c87f7ab29
-```
+3. **更新网站内容**
+   - 将导出的 markdown 文件复制到 `content/index.md`
+   - 如果有图片，确保图片 URL 是可访问的（保持 Notion 的图片 URL 即可）
 
-#### Vercel 部署
-在 Vercel 项目设置 → Environment Variables 中添加：
-- `NOTION_TOKEN`: 你的 Integration Token
-- `NOTION_PAGE_ID`: `26f2cebad66680e18f2fea4c87f7ab29`
+4. **提交并推送**
+   ```bash
+   git add .
+   git commit -m "Update content"
+   git push
+   ```
 
-## 部署到 Vercel
-
-### 方法 1：通过 Git（推荐）
-
-1. 将代码推送到 GitHub/GitLab/Bitbucket
-2. 在 Vercel 中点击 "Add New Project"
-3. 导入你的仓库
-4. 配置环境变量（见上一步）
-5. 点击 "Deploy"
-
-### 方法 2：通过 Vercel CLI
-
-```bash
-# 安装 Vercel CLI
-npm i -g vercel
-
-# 登录
-vercel login
-
-# 部署
-vercel
-
-# 按提示配置环境变量
-```
+Vercel 会自动检测更新并重新部署。
 
 ## 本地开发
 
@@ -65,59 +49,78 @@ vercel
 # 安装依赖
 npm install
 
-# 配置环境变量
-cp .env.example .env.local
-# 编辑 .env.local 填入你的 NOTION_TOKEN
-
 # 启动开发服务器
 npm run dev
 ```
 
 访问 http://localhost:3000
 
-## 功能特性
+## 部署
 
-- ✅ 完整保留 Notion 页面内容和样式
-- ✅ 支持图片、代码块、表格等所有 Notion 块
-- ✅ 响应式设计
-- ✅ 自动缓存（1小时更新一次）
-- ✅ 自定义域名支持
+代码已经推送到 GitHub，Vercel 会自动部署。
 
-## 常见问题
+如果需要手动重新部署，访问 Vercel 仪表板点击 "Redeploy"。
 
-### 页面显示 "加载失败"
-- 检查 `NOTION_TOKEN` 是否正确
-- 确认 Integration 已授权访问该页面
-- 检查 `NOTION_PAGE_ID` 是否正确
+## 自定义样式
 
-### 图片无法显示
-- 确保 Notion 页面中的图片是公开可访问的
-- 检查 next.config.mjs 中的 images 配置
+### 修改颜色
 
-### 内容更新后没有同步
-- 默认缓存时间为 1 小时
-- 可以手动触发 Vercel 重新部署来强制更新
-- 或者修改 `revalidate` 值调整缓存时间
+编辑 `app/globals.css` 添加自定义颜色：
 
-## 自定义配置
-
-### 修改缓存时间
-编辑 `app/page.tsx`:
-```typescript
-export const revalidate = 3600 // 1小时，单位：秒
+```css
+/* 自定义主题色 */
+@layer base {
+  :root {
+    --primary: #your-color;
+  }
+}
 ```
 
-### 自定义样式
-编辑 `app/globals.css` 或 `app/layout.tsx`
+### 修改布局
 
-### 添加自定义域名
-在 Vercel 项目设置 → Domains 中添加
+编辑 `app/page.tsx` 修改容器宽度：
 
-## 技术栈
+```tsx
+<div className="max-w-4xl mx-auto px-4 py-8">
+  {/* 改为你喜欢的宽度，例如 max-w-6xl */}
+</div>
+```
 
-- Next.js 15 (App Router)
-- React 19
-- TypeScript
-- Tailwind CSS
-- Notion Client
-- React Notion X
+### 修改 Markdown 样式
+
+编辑 `components/MarkdownRenderer.tsx` 自定义各个元素的样式。
+
+## 添加新页面
+
+1. 在 `content/` 目录创建新的 markdown 文件，例如 `about.md`
+
+2. 创建对应的 Next.js 页面，例如 `app/about/page.tsx`：
+
+```tsx
+import fs from 'fs'
+import path from 'path'
+import MarkdownRenderer from '@/components/MarkdownRenderer'
+
+function getMarkdownContent() {
+  const filePath = path.join(process.cwd(), 'content', 'about.md')
+  if (fs.existsSync(filePath)) {
+    return fs.readFileSync(filePath, 'utf-8')
+  }
+  return '# About\n\nThis is the about page.'
+}
+
+export default function About() {
+  const content = getMarkdownContent()
+  return (
+    <main className="min-h-screen bg-white">
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <MarkdownRenderer content={content} />
+      </div>
+    </main>
+  )
+}
+```
+
+## License
+
+MIT
