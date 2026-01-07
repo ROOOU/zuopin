@@ -5,11 +5,27 @@ import 'react-notion-x/src/styles.css'
 export const dynamic = 'force-dynamic'
 export const revalidate = 3600
 
-export default async function Home() {
+async function getPageId(searchParams: { page?: string }): Promise<string> {
   const notionPageId = process.env.NOTION_PAGE_ID
   const notionToken = process.env.NOTION_TOKEN
 
-  if (!notionPageId) {
+  // If requesting a subpage
+  if (searchParams.page && notionToken) {
+    return searchParams.page
+  }
+
+  return notionPageId || ''
+}
+
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { page?: string }
+}) {
+  const notionToken = process.env.NOTION_TOKEN
+  const pageId = await getPageId(searchParams)
+
+  if (!process.env.NOTION_PAGE_ID) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center p-8 max-w-2xl">
@@ -54,7 +70,7 @@ export default async function Home() {
       authToken: notionToken,
     })
 
-    const recordMap = await notion.getPage(notionPageId)
+    const recordMap = await notion.getPage(pageId)
 
     return (
       <main className="max-w-4xl mx-auto px-4 py-8">
